@@ -29,7 +29,7 @@
 
 ----------
 _这是一个带有动画的 TabView_
-项目起源于一个 Gif 图片，就是下图。（不过没有找到作者，如果你知道的话，请联系我。我增加作者署名，或者侵删。）
+项目起源于一个 Gif 图片，就是下图，[出处](https://dribbble.com/shots/5925052-Google-Bottom-Bar-Navigation-Pattern)。
 出于兴趣，于是有了这个项目。
 ![原图](https://github.com/Mr-XiaoLiang/LTabView/raw/master/preview/tab-ui-final.gif)
 
