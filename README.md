@@ -10,6 +10,10 @@
 	<a >
         <img src="https://img.shields.io/badge/license-GPL-red.svg">
     </a>
+    <a href="https://travis-ci.org/Mr-XiaoLiang/LTabView">
+         <img src="https://travis-ci.org/Mr-XiaoLiang/LTabView.svg?branch=master">
+    </a>
+    
 </p>
 
 ----------
