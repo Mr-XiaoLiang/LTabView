@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">LTabViewDemo</string>
+    <string name="action_settings">Settings</string>
+    <string-array name="style">
+        <item>Start</item>
+        <item>End</item>
+        <item>Fit</item>
+        <item>Center</item>
+    </string-array>
+</resources>
