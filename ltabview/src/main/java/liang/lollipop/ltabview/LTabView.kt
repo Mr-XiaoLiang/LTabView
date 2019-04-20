@@ -92,10 +92,11 @@ class LTabView(context: Context, attr: AttributeSet?,
 //            log("reLayout: $index: [${child.left}, ${child.top}, ${child.right}, ${child.bottom}]")
             child.translationX = 0F
             val item = child as LTabItem
+            val animHelper = itemAnimators[item]
             if (index == selectedIndex) {
-                item.schedule(1F)
+                animHelper?.progress = 1F
             } else {
-                item.schedule(0F)
+                animHelper?.progress = 0F
             }
         }
     }
@@ -394,8 +395,11 @@ class LTabView(context: Context, attr: AttributeSet?,
 
         private var duration = animationDuration
 
-        private var progress = 0F
-
+        var progress = 0F
+            set(value) {
+                field = value
+                update()
+            }
 
         fun close() {
             tabAnimator.cancel()
@@ -424,7 +428,6 @@ class LTabView(context: Context, attr: AttributeSet?,
         override fun onAnimationUpdate(animation: ValueAnimator?) {
             if (animation == tabAnimator) {
                 progress = animation.animatedValue as Float
-                update()
             }
         }
 
