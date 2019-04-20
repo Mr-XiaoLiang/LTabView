@@ -13,7 +13,18 @@
     <a href="https://travis-ci.org/Mr-XiaoLiang/LTabView">
          <img src="https://travis-ci.org/Mr-XiaoLiang/LTabView.svg?branch=master">
     </a>
-    
+    <a>
+        <img alt="GitHub Releases" src="https://img.shields.io/github/downloads/Mr-XiaoLiang/LTabView/1.0/total.svg">
+    </a>
+    <a>
+        <img alt="GitHub release" src="https://img.shields.io/github/release/Mr-XiaoLiang/LTabView.svg">
+    </a>
+    <a>
+        <img alt="GitHub commit activity" src="https://img.shields.io/github/commit-activity/y/Mr-XiaoLiang/LTabView.svg">
+    </a>
+    <a>
+        <img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/Mr-XiaoLiang/LTabView.svg">
+    </a>
 </p>
 
 ----------
