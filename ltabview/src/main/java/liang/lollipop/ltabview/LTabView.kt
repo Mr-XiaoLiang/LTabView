@@ -7,7 +7,8 @@ import android.util.Log
 import android.view.InflateException
 import android.view.View
 import android.widget.FrameLayout
-import androidx.core.view.ViewCompat
+import kotlin.math.abs
+import kotlin.math.max
 
 /**
  * @date: 2019/04/17 19:43
@@ -37,7 +38,7 @@ class LTabView(context: Context, attr: AttributeSet?,
     var style = Style.Fit
         set(value) {
             field = value
-            updateLocation()
+            updateLocationByAnimator()
         }
 
     /**
@@ -77,6 +78,12 @@ class LTabView(context: Context, attr: AttributeSet?,
             field = value
             locationAnimator.duration = value
             itemAnimators.values.forEach { it.duration(value) }
+        }
+
+    var space = 0
+        set(value) {
+            field = value
+            requestLayout()
         }
 
     private fun reLayout() {
@@ -185,14 +192,18 @@ class LTabView(context: Context, attr: AttributeSet?,
                 continue
             }
             val item = child as LTabItem
-            val itemHorizontal = ((height - item.miniSize) * 0.5F).toInt()
+            var itemHorizontal = ((height - item.miniSize) * 0.5F).toInt()
+            if (itemHorizontal < 0) {
+                itemHorizontal = 0
+            }
             val itemLeft = left + itemHorizontal
             childTargetLocation[index] = itemLeft
             if (index == selectedIndex) {
                 left += getChildWidthAt(index)
                 left -= item.miniSize
             }
-            left += height
+            left += max(height, item.miniSize)
+            left += space
         }
     }
 
@@ -205,7 +216,10 @@ class LTabView(context: Context, attr: AttributeSet?,
                 continue
             }
             val item = child as LTabItem
-            val itemHorizontal = ((height - item.miniSize) * 0.5F).toInt()
+            var itemHorizontal = ((height - item.miniSize) * 0.5F).toInt()
+            if (itemHorizontal < 0) {
+                itemHorizontal = 0
+            }
             val childWidth = getChildWidthAt(index)
             val itemRight = if (index == selectedIndex) {
                 right - itemHorizontal
@@ -217,7 +231,8 @@ class LTabView(context: Context, attr: AttributeSet?,
                 right -= childWidth
                 right += item.miniSize
             }
-            right -= height
+            right -= max(height, item.miniSize)
+            right -= space
         }
     }
 
@@ -282,7 +297,10 @@ class LTabView(context: Context, attr: AttributeSet?,
                 continue
             }
             val item = child as LTabItem
-            val itemHorizontal = ((height - item.miniSize) * 0.5F).toInt()
+            var itemHorizontal = ((height - item.miniSize) * 0.5F).toInt()
+            if (itemHorizontal < 0) {
+                itemHorizontal = 0
+            }
             childTargetLocation[index] = left + itemHorizontal
             if (index == selectedIndex) {
                 left += getChildWidthAt(index)
@@ -339,43 +357,51 @@ class LTabView(context: Context, attr: AttributeSet?,
             return
         }
         selectedIndex = index
+        updateLocationByAnimator()
+        onSelectedListener?.onTabSelected(index)
+    }
+
+    private fun updateLocationByAnimator() {
+        if (locationAnimator.isRunning) {
+            locationAnimator.cancel()
+        }
         updateLocation()
         for (i in 0 until childCount) {
             val child = getChildAt(i)
             val helper = itemAnimators[child as LTabItem]?:continue
-            if (i == index) {
+            if (i == selectedIndex) {
                 helper.open()
             } else {
                 helper.close()
             }
         }
-        onSelectedListener?.onTabSelected(index)
+        locationAnimator.setFloatValues(MIN_PROGRESS, MAX_PROGRESS)
+        locationAnimator.start()
     }
 
     private fun updateLocation() {
-        if (locationAnimator.isRunning) {
-            locationAnimator.cancel()
-        }
         for (i in 0 until childCount) {
             val child = getChildAt(i)
             childFromLocation[i] = child.x.toInt()
             log("selected: $i: from = ${childFromLocation[i]}, to = ${childTargetLocation[i]}")
         }
         updateChildLocation()
-        locationAnimator.setFloatValues(MIN_PROGRESS, MAX_PROGRESS)
-        locationAnimator.start()
     }
 
     override fun onAnimationUpdate(animation: ValueAnimator?) {
         if (animation == locationAnimator) {
             val value = locationAnimator.animatedValue as Float
-            for (i in 0 until childCount) {
-                val from = childFromLocation[i]
-                val to = childTargetLocation[i]
-                val child = getChildAt(i)
-                val offset = (to - from) * value + from - child.x
-                ViewCompat.offsetLeftAndRight(child, offset.toInt())
-            }
+            moveChildByOffset(value)
+        }
+    }
+
+    private fun moveChildByOffset(value: Float) {
+        for (i in 0 until childCount) {
+            val from = childFromLocation[i]
+            val to = childTargetLocation[i]
+            val child = getChildAt(i)
+            val offset = (to - from) * value + from - child.x
+            child.offsetLeftAndRight(offset.toInt())
         }
     }
 
@@ -403,9 +429,8 @@ class LTabView(context: Context, attr: AttributeSet?,
 
         fun close() {
             tabAnimator.cancel()
-            if (Math.abs(progress - MIN_PROGRESS) < TOLERANCE_SCOPE) {
+            if (abs(progress - MIN_PROGRESS) < TOLERANCE_SCOPE) {
                 progress = MIN_PROGRESS
-                update()
                 return
             }
             tabAnimator.setFloatValues(progress, MIN_PROGRESS)
@@ -415,9 +440,8 @@ class LTabView(context: Context, attr: AttributeSet?,
 
         fun open() {
             tabAnimator.cancel()
-            if (Math.abs(progress - MAX_PROGRESS) < TOLERANCE_SCOPE) {
+            if (abs(progress - MAX_PROGRESS) < TOLERANCE_SCOPE) {
                 progress = MAX_PROGRESS
-                update()
                 return
             }
             tabAnimator.setFloatValues(progress, MAX_PROGRESS)
@@ -466,7 +490,7 @@ class LTabView(context: Context, attr: AttributeSet?,
     class ItemSize(var max: Int = -1, var min: Int = -1, var unavailable: Int = 0) {
 
         fun limit(value: Int): Int {
-            if (max > 0 && value > max) {
+            if (max in 1 until value) {
                 return max
             }
             if (min > 0 && value < min) {

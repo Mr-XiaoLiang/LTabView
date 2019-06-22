@@ -1,5 +1,6 @@
 package liang.lollipop.ltabview.builder
 
+import androidx.viewpager.widget.ViewPager
 import liang.lollipop.ltabview.LTabView
 
 /**
@@ -7,7 +8,7 @@ import liang.lollipop.ltabview.LTabView
  * @author: lollipop
  * 基础构造器
  */
-open class BaseBuilder(protected val tabView: LTabView) {
+abstract class BaseBuilder(protected val tabView: LTabView) {
 
     private val onSelectedListenerList = ArrayList<LTabView.OnSelectedListener>()
 
@@ -57,6 +58,17 @@ open class BaseBuilder(protected val tabView: LTabView) {
 
     fun remmoveOnSelectedListener(listener: LTabView.OnSelectedListener) {
         onSelectedListenerList.remove(listener)
+    }
+
+    fun setupWithViewPager(viewPager: ViewPager) {
+        viewPager.addOnPageChangeListener(object: ViewPager.SimpleOnPageChangeListener(){
+            override fun onPageSelected(position: Int) {
+                tabView.selected(position)
+            }
+        })
+        onSelected {
+            viewPager.currentItem = it
+        }
     }
 
     private class SimpleSelectedListener(private val callback: (Int) -> Unit): LTabView.OnSelectedListener {

@@ -6,11 +6,11 @@ import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
-import android.os.Build
 import android.text.Spannable
 import android.text.SpannableStringBuilder
 import android.text.style.ForegroundColorSpan
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
 
 /**
@@ -136,11 +136,7 @@ object TintUtil {
         companion object {
 
             fun whitResId(context: Context,resId:Int): TintDrawableBuilder {
-                val wrappedDrawable = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    context.resources.getDrawable(resId, context.theme)
-                } else {
-                    context.resources.getDrawable(resId)
-                }
+                val wrappedDrawable = ContextCompat.getDrawable(context, resId)?: throw RuntimeException("drawable not found")
                 return TintDrawableBuilder(wrappedDrawable)
             }
 
