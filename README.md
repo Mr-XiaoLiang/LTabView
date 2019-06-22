@@ -36,7 +36,7 @@ _这是一个带有动画的 TabView_
 #### 成果
 ![Tab切换效果](https://raw.githubusercontent.com/Mr-XiaoLiang/LTabView/master/preview/preview1.gif)
 ![布局切换效果](https://raw.githubusercontent.com/Mr-XiaoLiang/LTabView/master/preview/preview2.gif)
-![排版切换效果](https://raw.githubusercontent.com/Mr-XiaoLiang/LTabView/master/preview/preview2.gif)
+![排版切换效果](https://raw.githubusercontent.com/Mr-XiaoLiang/LTabView/master/preview/preview3.gif)
 
 #### 使用方法
 
