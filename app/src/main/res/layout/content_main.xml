@@ -41,11 +41,33 @@
             android:layout_height="?attr/actionBarSize"
             android:background="#E7E7E7"/>
 
+    <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="?attr/actionBarSize"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tabView2"
+            android:gravity="center"
+            android:text="自适应宽度"/>
+
+    <HorizontalScrollView
+            android:id="@+id/tabViewGroup3"
+            app:layout_constraintTop_toBottomOf="@id/textView3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        <liang.lollipop.ltabview.LTabView
+                android:id="@+id/tabView3"
+                android:layout_width="wrap_content"
+                android:layout_height="?attr/actionBarSize"
+                android:background="#E7E7E7"/>
+    </HorizontalScrollView>
+
     <View
         android:id="@+id/bottomLine"
         android:layout_width="match_parent"
         android:layout_height="1px"
-        app:layout_constraintTop_toBottomOf="@id/tabView2"/>
+        app:layout_constraintTop_toBottomOf="@id/tabViewGroup3"/>
 
     <CheckBox
             android:layout_width="wrap_content"

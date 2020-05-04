@@ -105,7 +105,74 @@ class MainActivity : AppCompatActivity() {
             textView2.text = "selected ：$it"
         }
 
-
+        LTabHelper.withExpandItem(tabView3)
+            .addItem {
+                val color = ContextCompat.getColor(this@MainActivity, R.color.purple)
+                setIcon(R.drawable.ic_home_black_24dp)
+                selectedIconColor = color
+                unselectedIconColor = Color.BLACK
+                textColor = color
+                expandColor = color and 0x60FFFFFF
+                text = "Home"
+            }.addItem {
+                val color = ContextCompat.getColor(this@MainActivity, R.color.pink)
+                setIcon(R.drawable.ic_favorite_border_black_24dp)
+                selectedIconColor = color
+                unselectedIconColor = Color.BLACK
+                textColor = color
+                expandColor = color and 0x60FFFFFF
+                text = "Like"
+            }.addItem {
+                val color = ContextCompat.getColor(this@MainActivity, R.color.orange)
+                setIcon(R.drawable.ic_whatshot_black_24dp)
+                selectedIconColor = color
+                unselectedIconColor = Color.BLACK
+                textColor = color
+                expandColor = color and 0x60FFFFFF
+                text = "Hot"
+            }.addItem {
+                val color = ContextCompat.getColor(this@MainActivity, R.color.blue)
+                setIcon(R.drawable.ic_person_black_24dp)
+                selectedIconColor = color
+                unselectedIconColor = Color.BLACK
+                textColor = color
+                expandColor = color and 0x60FFFFFF
+                text = "Center"
+            }.onSelected {
+                textView3.text = "selected ：$it"
+            }
+        LTabHelper.withMaterialItem(tabView3)
+            .addItem {
+                val color = ContextCompat.getColor(this@MainActivity, R.color.purple)
+                setIcon(R.drawable.ic_home_black_24dp)
+                selectedIconColor = color
+                unselectedIconColor = Color.BLACK
+                textColor = color
+                text = "Home"
+            }.addItem {
+                val color = ContextCompat.getColor(this@MainActivity, R.color.pink)
+                setIcon(R.drawable.ic_favorite_border_black_24dp)
+                selectedIconColor = color
+                unselectedIconColor = Color.BLACK
+                textColor = color
+                text = "Like"
+            }.addItem {
+                val color = ContextCompat.getColor(this@MainActivity, R.color.orange)
+                setIcon(R.drawable.ic_whatshot_black_24dp)
+                selectedIconColor = color
+                unselectedIconColor = Color.BLACK
+                textColor = color
+                text = "Hot"
+            }.addItem {
+                val color = ContextCompat.getColor(this@MainActivity, R.color.blue)
+                setIcon(R.drawable.ic_person_black_24dp)
+                selectedIconColor = color
+                unselectedIconColor = Color.BLACK
+                textColor = color
+                text = "Center"
+            }.onSelected {
+                textView3.text = "selected ：$it"
+            }
 
         limitSwitch.setOnCheckedChangeListener { _, isChecked ->
             tabHelper.isLimit = isChecked
